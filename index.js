@@ -1,0 +1,110 @@
+const express = require('express');
+const mongoose = require ('mongoose');
+const path = require('path');
+const methodOverride = require('method-override');
+const ExpressError = require('./utilities/ExpressError')
+const catchAsync = require('./utilities/catchAsync')
+const Quote = require('./models/quotes');
+const e = require('express');
+const ejsMate = require('ejs-mate');
+
+
+
+mongoose.connect('mongodb://localhost:27017/rqg', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error"));
+db.once("open", () => {
+    console.log("Database connected")
+});
+
+const app = express();
+
+app.engine('ejs', ejsMate)
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
+
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, 'public')));
+
+const categories = ['motivational', 'funny', 'islamic', 'christian', 'pidgin']
+
+app.get('/', catchAsync(async(req, res, next) => {
+    res.render('home')
+}))
+
+app.get('/quotes', catchAsync(async(req, res, next) => {
+    try {
+        const { category } = req.query
+        if(category) {
+            const quotes = await Quote.find({category})
+            res.render('index', { quotes, category })
+        } else {
+            const quotes = await Quote.find({})
+            res.render('index', { quotes, category: 'All'})
+        }
+    }catch(e){
+    next(e)
+    }
+}))
+
+// app.get('/randq', catchAsync(async(req, res, next) => {
+//     try {
+//         const { category } = req.query
+//         if(category) {
+//         const quote = await Quote.aggregate([ {$match: {category: category}}, { $sample: {size: 1} }]) 
+//             // const quotes = await Quote.find({category})
+//             res.render('rando', { quote, category })
+//         }else {
+//             const quote = await Quote.aggregate([ { $sample: {size: 1} } ])
+//             res.render('rando', { quote })
+            
+//         }
+        
+//     }catch(e){
+//         next(e)
+//     }
+// }))
+
+app.get('/random', catchAsync(async(req, res, next) => {
+    try {
+        const { category } = req.query
+        if(category) {
+        const quote = await Quote.aggregate([ {$match: {category: category}}, { $sample: {size: 1} }]) 
+            // const quotes = await Quote.find({category})
+            res.render('rando', { quote, category })
+        }else {
+            const quote = await Quote.aggregate([ { $sample: {size: 1} } ])
+            res.render('rando', { quote })
+            
+        }
+        
+    }catch(e){
+        next(e)
+    }
+}))
+
+app.get('/addNew', catchAsync(async(req, res, next) => {
+    res.render('new', { categories })
+}))
+
+app.post('/', catchAsync(async(req, res, next) => {
+    const newQuote = new Quote(req.body)
+    await newQuote.save()
+    console.log(newQuote)
+    console.log(req.body)
+    res.redirect('/')
+}))
+
+app.get('/all', async(req, res, next)=> {
+    const quotes = await Quote.find({})
+    res.render('index', { quotes })
+})
+
+app.listen(3000, () => {
+    console.log('Listening on port 3000')
+})
