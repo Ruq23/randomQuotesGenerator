@@ -7,6 +7,8 @@ const catchAsync = require('./utilities/catchAsync')
 const Quote = require('./models/quotes');
 const e = require('express');
 const ejsMate = require('ejs-mate');
+const puppeteer = require('puppeteer');
+const getPage = require('./utilities/newPage')
 
 
 
@@ -99,6 +101,27 @@ app.post('/', catchAsync(async(req, res, next) => {
     console.log(req.body)
     res.redirect('/')
 }))
+
+// app.get('/random/download', catchAsync(async(req, res, next) => {
+//         const page = await getPage()
+// }))
+
+// app.get('/export/html', (req, res) => {
+//     const templateData = {  }
+//     res.render('template.html', templateData)
+// })
+
+app.get('/export/pdf', (req, res) => {
+    (async () => {
+        const browser = await puppeteer.launch()
+        const page = await browser.newPage()
+        await page.goto('http://localhost:3000/random/')
+        const buffer = await page.pdf({format: 'A4', })
+        res.type('application/pdf')
+        res.send(buffer)
+        browser.close()
+    })()
+})
 
 app.get('/all', async(req, res, next)=> {
     const quotes = await Quote.find({})

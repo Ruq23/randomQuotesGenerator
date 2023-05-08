@@ -1,0 +1,35 @@
+h1 {
+    display: inline;
+    margin-left: 500px;
+}
+
+body{
+    background-color: #8ecae6;
+}
+
+.head p {
+    width: 400px;
+    font-size: larger;
+    margin-top: 150px;
+
+}
+
+.head button {
+    padding: 15px 30px;
+    background-color: #f1faee;
+}
+
+.head button:hover {
+    cursor: pointer;
+    background-color: #8ecae6;
+}
+
+.tail img {
+    margin-top: 100px;
+}
+
+.all {
+    display: flex;
+    justify-content: space-around;
+
+}

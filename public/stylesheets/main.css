@@ -1,0 +1,33 @@
+#main {
+    position: relative;
+    left: 500px;
+}
+
+body {
+    background-color: #8ecae6;
+}
+
+a {
+    color: black;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+p{
+    font-weight: 700;
+}
+
+li {
+    font-weight: 700;   
+}
+
+button {
+    background-color: white;
+}
+
+button:hover {
+    background-color: #8ecae6;
+}
+

@@ -1,0 +1,8 @@
+#navbarSupportedContent {
+    position: relative;
+    left: 90px;
+}
+
+body{
+    overflow-x: hidden;
+}
