@@ -7,15 +7,15 @@ const quoteSchema = new Schema ({
         type: String,
         lowercase: true,
         enum: ['motivational', 'funny', 'islamic', 'christian', 'pidgin'],
-        required: true
+        // required: true
     },
     body: {
         type: String,
-        required: [true, 'Body can not be blank'],
+        // required: [true, 'Body can not be blank'],
     },
     author: {
         type: String,
-        required: true
+        // required: true
     }
 })
 
