@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+
 const express = require('express');
 const mongoose = require ('mongoose');
 const path = require('path');
@@ -12,7 +17,20 @@ const getPage = require('./utilities/newPage')
 const port = process.env.PORT || 3000;
 
 
-mongoose.connect('mongodb://localhost:27017/rqg', {
+console.log(process.env.MONGODB_URI)
+
+// mongoose.connect('mongodb://localhost:27017/rqg', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+// export default async () => {
+//     const URI: any = process.env.MONGO_URI;
+//     await mongoose.connect(URI);
+  
+//     logger.info(`MongoDB Connected`);
+//   };
+
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

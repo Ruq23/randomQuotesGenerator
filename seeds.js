@@ -1,7 +1,16 @@
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const mongoose = require('mongoose')
 const Quote = require('./models/quotes')
 
-mongoose.connect('mongodb://localhost:27017/rqg', {
+// mongoose.connect('mongodb://localhost:27017/rqg', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
