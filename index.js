@@ -9,7 +9,7 @@ const e = require('express');
 const ejsMate = require('ejs-mate');
 const puppeteer = require('puppeteer');
 const getPage = require('./utilities/newPage')
-
+const port = process.env.PORT || 3000;
 
 
 mongoose.connect('mongodb://localhost:27017/rqg', {
@@ -128,6 +128,6 @@ app.get('/all', async(req, res, next)=> {
     res.render('index', { quotes })
 })
 
-app.listen(3000, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log('Listening on port 3000')
 })
