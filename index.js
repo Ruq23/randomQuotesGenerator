@@ -30,7 +30,7 @@ console.log(process.env.MONGODB_URI)
 //     logger.info(`MongoDB Connected`);
 //   };
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect("mongodb://mongo:sZSwfbIZdDrk2AybqwO4@containers-us-west-103.railway.app:5521", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
