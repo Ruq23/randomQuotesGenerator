@@ -14,10 +14,8 @@ const e = require('express');
 const ejsMate = require('ejs-mate');
 const puppeteer = require('puppeteer');
 const getPage = require('./utilities/newPage')
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-
-console.log(process.env.MONGODB_URI)
 
 // mongoose.connect('mongodb://localhost:27017/rqg', {
 //     useNewUrlParser: true,
@@ -30,10 +28,15 @@ console.log(process.env.MONGODB_URI)
 //     logger.info(`MongoDB Connected`);
 //   };
 
-mongoose.connect("mongodb://mongo:sZSwfbIZdDrk2AybqwO4@containers-us-west-103.railway.app:5521", {
+// mongoose.connect("mongodb://mongo:sZSwfbIZdDrk2AybqwO4@containers-us-west-103.railway.app:5521", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+
+mongoose.connect(process.env.MONGODB_CONNECT_URI), {
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
+}
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
@@ -146,6 +149,6 @@ app.get('/all', async(req, res, next)=> {
     res.render('index', { quotes })
 })
 
-app.listen(port, "0.0.0.0", () => {
-    console.log('Listening on port 3000')
+app.listen(PORT, () => {
+    console.log('Listening on port ' + PORT)
 })
